@@ -17,13 +17,5 @@ RUN apt-get update && \
 RUN chown -R ${NB_USER} /home/${NB_USER}
 USER ${NB_USER}
 
-# install the python dependencies
-COPY requirements.txt environment.yml /tmp/
-RUN mamba env update -q -f /tmp/environment.yml && \
-    /opt/conda/bin/pip install -r /tmp/requirements.txt --no-cache-dir && \
-    mamba clean -y --all && \
-    mamba env export -n "root" && \
-    rm -rf ${HOME}/.renku/venv
-
 # Install R dependencies
 RUN R -e "install.packages(c('agricolae', 'cowplot', 'data.table', 'dplyr', 'ggpubr', 'gridExtra', 'reshape2', 'rmdformats', 'scales', 'tidyverse', 'vegan'))"
